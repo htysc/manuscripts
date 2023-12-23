@@ -11,8 +11,8 @@ class UserCreateAPIView(CreateAPIView):
     serializer_class = UserSerializer
 
 class UserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
 
     def get_object(self):
         user = get_object_or_404(User, id=self.kwargs['pk'])
