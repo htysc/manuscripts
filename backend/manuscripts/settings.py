@@ -30,11 +30,14 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '34.238.247.132',
+    'manuscripts.csproject.org',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    'http://34.238.247.132',
+    'http://manuscripts.csproject.org',
 ]
 
 
