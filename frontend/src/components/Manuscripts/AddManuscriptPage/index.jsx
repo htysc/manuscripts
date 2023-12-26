@@ -5,7 +5,8 @@ import '../style.css';
 import { fetchFromBackend } from "../../../json";
 
 const AddManuscriptPage = ({manuscriptId, count, query, setSearchParams}) => {
-  const textRef = useRef(null);
+  const text1Ref = useRef(null);
+  const text2Ref = useRef(null);
   const context = useContext(APIContext);
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState(null);
@@ -48,7 +49,7 @@ const AddManuscriptPage = ({manuscriptId, count, query, setSearchParams}) => {
     });
   }
 
-  const setTextHeight = () => {
+  const setTextHeight = (textRef) => {
     textRef.current.style.height = "";
     textRef.current.style.height = textRef.current.scrollHeight + "px";
   }
@@ -61,7 +62,10 @@ const AddManuscriptPage = ({manuscriptId, count, query, setSearchParams}) => {
     </div>
     <div className="row justify-content-center">
       <div className="col-sm p-2">
-        <textarea className="form-control" name="text" id={`text_new`} placeholder="Text" ref={textRef} onInput={setTextHeight} required />
+        <textarea className="form-control" name="text1" id={`text1_new`} placeholder="Text" ref={text1Ref} onInput={() => setTextHeight(text1Ref)} required />
+      </div>
+      <div className="col-sm p-2">
+        <textarea className="form-control" name="text2" id={`text2_new`} placeholder="Text" ref={text2Ref} onInput={() => setTextHeight(text2Ref)} required />
       </div>
       <div className="col-sm p-2">
         {!!image.url

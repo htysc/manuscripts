@@ -74,7 +74,10 @@ const ReadManuscript = () => {
                   <p className="m-0">{ page.number }</p>
                 </div>
                 <div className="col-sm p-2">
-                  <p>{ page.text }</p>
+                  <p>{ page.text1 }</p>
+                </div>
+                <div className="col-sm p-2">
+                  <p>{ page.text2 }</p>
                 </div>
                 <div className="col-sm p-2">
                   {!!page.image

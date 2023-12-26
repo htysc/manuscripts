@@ -8,6 +8,7 @@ class Manuscript(models.Model):
 
 class Page(models.Model):
     number = models.PositiveIntegerField()
-    text = models.TextField()
+    text1 = models.TextField()
+    text2 = models.TextField()
     image = models.ImageField(upload_to='pages/', blank=True)
     manuscript = models.ForeignKey(Manuscript, on_delete=models.CASCADE, related_name='pages')

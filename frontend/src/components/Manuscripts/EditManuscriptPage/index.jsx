@@ -5,7 +5,8 @@ import '../style.css';
 import { fetchFromBackend } from "../../../json";
 
 const EditManuscriptPage = ({manuscriptId, page, pages, setPages}) => {
-  const textRef = useRef(null);
+  const text1Ref = useRef(null);
+  const text2Ref = useRef(null);
   const context = useContext(APIContext);
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState(null);
@@ -75,12 +76,13 @@ const EditManuscriptPage = ({manuscriptId, page, pages, setPages}) => {
     });
   }
 
-  const setTextHeight = () => {
+  const setTextHeight = (textRef) => {
     textRef.current.style.height = "";
     textRef.current.style.height = textRef.current.scrollHeight + "px";
   }
 
-  textRef.current?.dispatchEvent(new Event('input', {bubbles: true})); // Force resize
+  text1Ref.current?.dispatchEvent(new Event('input', {bubbles: true})); // Force resize
+  text2Ref.current?.dispatchEvent(new Event('input', {bubbles: true})); // Force resize
 
   return <form className="row p-3 m-2 border border-dark rounded" onSubmit={e => onSave(e)} encType="multipart/form-data">
     <div className="row justify-content-center">
@@ -90,7 +92,10 @@ const EditManuscriptPage = ({manuscriptId, page, pages, setPages}) => {
     </div>
     <div className="row justify-content-center">
       <div className="col-sm p-2">
-        <textarea className="form-control" name="text" id={`text_${page.number}`} placeholder="Text" defaultValue={page.text} ref={textRef} onInput={setTextHeight} required />
+        <textarea className="form-control" name="text1" id={`text1_${page.number}`} placeholder="Text" defaultValue={page.text1} ref={text1Ref} onInput={() => setTextHeight(text1Ref)} required />
+      </div>
+      <div className="col-sm p-2">
+        <textarea className="form-control" name="text2" id={`text2_${page.number}`} placeholder="Text" defaultValue={page.text2} ref={text2Ref} onInput={() => setTextHeight(text2Ref)} required />
       </div>
       <div className="col-sm p-2">
         {!!page.image?.url
