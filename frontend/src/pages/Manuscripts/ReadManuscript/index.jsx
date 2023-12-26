@@ -37,23 +37,42 @@ const ReadManuscript = () => {
   }, [context, id, navigate]);
 
   useEffect(() => {
-    fetchFromBackend(`/manuscripts/${id}/pages/?limit=10&offset=${(query.page - 1) * 10}`, {
-      headers: {
-        Authorization: 'Bearer ' + context.token
-      }
-    }, navigate)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        return {results: [], count: 1};
-      }
-    })
-    .then(json => {
-      setPages(json.results);
-      setTotalPages(Math.ceil(json.count / 10));
-    });
-  }, [context, id, query, navigate]);
+    if (!searchParams.has("print")) {
+      fetchFromBackend(`/manuscripts/${id}/pages/?limit=10&offset=${(query.page - 1) * 10}`, {
+        headers: {
+          Authorization: 'Bearer ' + context.token
+        }
+      }, navigate)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return {results: [], count: 1};
+        }
+      })
+      .then(json => {
+        setPages(json.results);
+        setTotalPages(Math.ceil(json.count / 10));
+      });
+    } else {
+      fetchFromBackend(`/manuscripts/${id}/pages/`, {
+        headers: {
+          Authorization: 'Bearer ' + context.token
+        }
+      }, navigate)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return [];
+        }
+      })
+      .then(json => {
+        setPages(json);
+        setTotalPages(1);
+      });
+    }
+  }, [context, id, query, searchParams, navigate]);
 
   useEffect(() => {
     if (!!totalPages && pages.length === 0) {
@@ -62,33 +81,26 @@ const ReadManuscript = () => {
     }
   }, [totalPages, pages, query, setSearchParams]);
 
-  window.addEventListener('beforeprint', async () => {
-    const response = await fetchFromBackend(`/manuscripts/${id}/pages/`, {
-      headers: {
-        Authorization: 'Bearer ' + context.token
-      }
-    }, navigate);
+  const printPage = () => {
+    const toPrint = window.open(`/manuscripts/${id}/?print`, 'Print', 'popup=true');
+    toPrint.addEventListener('afterprint', () => {
+      toPrint.close();
+    }, true);
+  }
 
-    let json;
-    if (response.ok) {
-      json = await response.json();
-    } else {
-      json = {results: [], count: 1};
+  useEffect(() => {
+    if (pages.length > 0 && searchParams.has("print")) {
+      window.print();
     }
-    setPages(json);
-    setTotalPages(1);
-  });
-
-  window.addEventListener('afterprint', () => {
-    navigate(0);
-  });
+  }, [pages, searchParams])
 
   return <div className="main-container container">
     <div className="row text-center">
       <h1 className="display-3 mb-4"><span>{manuscript.title}</span></h1>
       {pages.length > 0
         ? <>
-          <p className="m-0"><Link className="btn btn-primary" to={`/manuscripts/${id}/edit?page=${query.page}`}>Edit this manuscript</Link></p>
+          <p><Link className="btn btn-primary" to={`/manuscripts/${id}/edit?page=${query.page}`}>Edit this manuscript</Link></p>
+          <p className="m-0"><button className="btn btn-primary" onClick={printPage}>Print this manuscript</button></p>
           <div className="page-container container p-4">
             {pages.map((page, idx) => {
               return <div key={idx} className="manuscript-page row p-3 m-2 border border-dark rounded">
@@ -121,6 +133,7 @@ const ReadManuscript = () => {
         </>
         : ''}
       <p><Link className="btn btn-primary" to={`/manuscripts/${id}/edit?page=${query.page}`}>Edit this manuscript</Link></p>
+      <p><button className="btn btn-primary" onClick={printPage}>Print this manuscript</button></p>
       <DeleteManuscriptButton id={id} />
     </div>
   </div>;
