@@ -17,7 +17,7 @@ const Login = () => {
     fetchFromBackend('/accounts/login/', {
       method: "POST",
       body: formData
-    })
+    }, navigate)
     .then(async response => {
       if (response.ok) {
         return response.json();
@@ -33,7 +33,7 @@ const Login = () => {
         headers: {
           Authorization: 'Bearer ' + access
         }
-      })
+      }, navigate)
       .then(async response => {
         if (response.ok) {
           return response.json()

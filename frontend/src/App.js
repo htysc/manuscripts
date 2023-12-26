@@ -8,6 +8,8 @@ import Register from './pages/Accounts/Register';
 import Login from './pages/Accounts/Login';
 import Logout from './pages/Accounts/Logout';
 import ViewManuscripts from './pages/Manuscripts/ViewManuscripts';
+import ReadManuscript from './pages/Manuscripts/ReadManuscript';
+import EditManuscript from './pages/Manuscripts/EditManuscript';
 import NotFound from './pages/NotFound';
 
 const Main = () => {
@@ -34,9 +36,8 @@ const Main = () => {
         {/* <Route path="profile/:id" element={<ViewProfile />} /> */}
         {/* <Route path="profile/:id/edit" element={<EditProfile />} /> */}
         {/* Manuscripts */}
-        {/* <Route path="manuscripts/new" element={<CreateManuscript />} /> */}
-        {/* <Route path="manuscripts/:id" element={<ReadManuscript />} /> */}
-        {/* <Route path="manuscripts/:id/edit" element={<EditManuscript />} /> */}
+        <Route path="manuscripts/:id" element={<ReadManuscript />} />
+        <Route path="manuscripts/:id/edit" element={<EditManuscript />} />
         {/* General */}
         <Route path="logout" element={<Logout />} />
         <Route path="*" element={<NotFound />} />

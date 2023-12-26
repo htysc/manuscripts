@@ -31,7 +31,7 @@ class PageListCreateAPIView(ListCreateAPIView):
     serializer_class = PageSerializer
 
     def get_queryset(self):
-        return Page.objects.filter(manuscript=self.kwargs['manuscript'])
+        return Page.objects.filter(manuscript=self.kwargs['manuscript']).order_by('number', 'id')
 
     def perform_create(self, serializer):
         manuscript = get_object_or_404(Manuscript, id=self.kwargs['manuscript'])

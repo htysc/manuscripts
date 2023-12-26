@@ -10,7 +10,7 @@ const Logout = () => {
   }, [context]);
 
   return (
-    <Navigate to="/" />
+    <Navigate to="/login" />
   );
 };
 

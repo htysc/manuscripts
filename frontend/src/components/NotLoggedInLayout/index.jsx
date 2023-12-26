@@ -1,4 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom"
+import logo from "../../img/logo.png"
 
 const Layout = () => {
   const location = useLocation();
@@ -10,7 +11,9 @@ const Layout = () => {
         <header className="mb-5">
           <nav className="navbar navbar-expand navbar-dark bg-dark navbar-static-top">
             <div className="container-fluid">
-              <div></div>
+              <div className="navbar-brand">
+                <img src={logo} width="40" height="40" className="d-inline-block align-top border border-dark rounded-circle bg-light" alt='Manuscripts Logo' />
+              </div>
               <ul className="navbar-nav">
                 <li className="nav-item">
                   <Link className={`nav-link btn btn-link text-decoration-none text-light${url.startsWith('/register') ? ' active' : ''}`} to="/register">Register</Link>

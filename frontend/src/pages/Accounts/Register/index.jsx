@@ -16,7 +16,7 @@ const Register = () => {
     fetchFromBackend('/accounts/', {
       method: "POST",
       body: formData
-    })
+    }, navigate)
     .then(async response => {
       if (response.ok) {
         return response.json();

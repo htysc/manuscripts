@@ -9,7 +9,7 @@ const ViewManuscripts = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [manuscripts, setManuscripts] = useState([]);
   
   const query = useMemo(() => ({
@@ -21,18 +21,11 @@ const ViewManuscripts = () => {
       headers: {
         Authorization: 'Bearer ' + context.token
       }
-    })
+    }, navigate)
     .then(response => {
       if (response.ok) {
         return response.json();
       } else {
-        if (parseInt(searchParams.get('page')) !== 1) {
-          if (!totalPages || totalPages === 1) {
-            setSearchParams({...query, page: 1});
-          } else {
-            setSearchParams({...query, page: query.page - 1});
-          }
-        }
         return {results: [], count: 1};
       }
     })
@@ -40,7 +33,7 @@ const ViewManuscripts = () => {
       setManuscripts(json.results);
       setTotalPages(Math.ceil(json.count / 10));
     });
-  }, [context, query]);
+  }, [context, query, navigate]);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -53,7 +46,7 @@ const ViewManuscripts = () => {
         Authorization: 'Bearer ' + context.token
       },
       body: formData
-    })
+    }, navigate)
     .then(async response => {
       if (response.ok) {
         return response.json();
@@ -73,14 +66,30 @@ const ViewManuscripts = () => {
     });
   };
 
+  useEffect(() => {
+    if (!!totalPages && manuscripts.length === 0) {
+      setSearchParams({...query, page: 1});
+      setTotalPages(1);
+    }
+  }, [totalPages, manuscripts, query, setSearchParams]);
+
   return <div className="container">
-    <div className="row text-center">
+    <div className="row text-center justify-content-center">
       <h1 className="display-3 mb-4">My manuscripts</h1>
       {manuscripts.map((manuscript, idx) => <p key={idx}>
           <Link className="btn btn-outline-primary" to={`/manuscripts/${manuscript.id}`}>{manuscript.title}</Link>
         </p>
       )}
-      <div className="border border-success rounded-3 p-3 mt-5">
+      <div className="col col-sm-6 d-flex justify-content-between">
+        {query.page > 1 
+          ? <button className='btn btn-secondary mt-3' onClick={() => setSearchParams({...query, page: query.page - 1})}>Previous</button>
+          : <button className="invisible" /> }
+        {query.page < totalPages
+          ? <button className='btn btn-secondary mt-3' onClick={() => setSearchParams({...query, page: query.page + 1})}>Next</button>
+          : <button className="invisible" /> }
+      </div>
+      <p className='mt-2 text-center'>Page {query.page} out of {totalPages || 1}</p>
+      <div className="col col-sm-6 border border-success rounded-3 p-3 mt-5">
         <p className="h3 mb-3">Create a manuscript</p>
         {showSuccess
           ? <div className="alert alert-success" role="alert">
