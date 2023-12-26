@@ -1,7 +1,11 @@
 import { Outlet, Link } from "react-router-dom"
 import logo from "../../img/logo.png"
+import { useContext } from "react";
+import { APIContext } from "../../contexts/APIContext";
 
 const Layout = () => {
+  const context = useContext(APIContext);
+
   return <>
     <div className="page-container">
       <div className="content-wrap bg-container">
@@ -12,9 +16,14 @@ const Layout = () => {
                 <img src={logo} width="40" height="40" className="d-inline-block align-top border border-dark rounded-circle bg-light" alt='Manuscripts Logo' />
                 <span className="align-middle ms-2">Home</span>
               </Link>
-              <form className="form-inline bg-dark" action="/logout" method="GET">
-                <button className="btn btn-link text-decoration-none text-light" type="submit">Log out</button>
-              </form>
+              <ul className="navbar-nav">
+                <li className="nav-item">
+                  <Link className="btn btn-link text-decoration-none text-light" to={`/profile/${context.id}/`}>Profile</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="btn btn-link text-decoration-none text-light" to={`/logout`}>Logout</Link>
+                </li>
+              </ul>
             </div>
           </nav>
         </header>

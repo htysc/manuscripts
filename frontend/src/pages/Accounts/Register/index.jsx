@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchFromBackend } from '../../../json';
+import { fetchFromBackendWithoutRedirect } from '../../../json';
 
 const Register = () => {
   const [showSuccess, setShowSuccess] = useState(false);
@@ -13,7 +13,7 @@ const Register = () => {
 
     const formData = new FormData(e.target);
 
-    fetchFromBackend('/accounts/', {
+    fetchFromBackendWithoutRedirect('/accounts/', {
       method: "POST",
       body: formData
     }, navigate)

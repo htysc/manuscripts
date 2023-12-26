@@ -7,6 +7,8 @@ import LoggedInLayout from './components/LoggedInLayout';
 import Register from './pages/Accounts/Register';
 import Login from './pages/Accounts/Login';
 import Logout from './pages/Accounts/Logout';
+import ViewProfile from './pages/Accounts/ViewProfile';
+import EditProfile from './pages/Accounts/EditProfile';
 import ViewManuscripts from './pages/Manuscripts/ViewManuscripts';
 import ReadManuscript from './pages/Manuscripts/ReadManuscript';
 import EditManuscript from './pages/Manuscripts/EditManuscript';
@@ -33,8 +35,8 @@ const Main = () => {
         {/* Accounts */}
         <Route path="register" element={<Register />} />
         <Route path="login" element={<Login />} />
-        {/* <Route path="profile/:id" element={<ViewProfile />} /> */}
-        {/* <Route path="profile/:id/edit" element={<EditProfile />} /> */}
+        <Route path="profile/:id" element={<ViewProfile />} />
+        <Route path="profile/:id/edit" element={<EditProfile />} />
         {/* Manuscripts */}
         <Route path="manuscripts/:id" element={<ReadManuscript />} />
         <Route path="manuscripts/:id/edit" element={<EditManuscript />} />

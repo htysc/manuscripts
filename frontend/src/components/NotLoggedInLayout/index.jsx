@@ -19,7 +19,7 @@ const Layout = () => {
                   <Link className={`nav-link btn btn-link text-decoration-none text-light${url.startsWith('/register') ? ' active' : ''}`} to="/register">Register</Link>
                 </li>
                 <li className="nav_item">
-                  <Link className={`nav-link btn btn-link text-decoration-none text-light${url.startsWith('/login') ? ' active' : ''}`} to="/login">Log In</Link>
+                  <Link className={`nav-link btn btn-link text-decoration-none text-light${url.startsWith('/login') ? ' active' : ''}`} to="/login">Login</Link>
                 </li>
               </ul>
             </div>

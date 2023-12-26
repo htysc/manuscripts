@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { APIContext } from "../../../contexts/APIContext";
 import { useNavigate } from 'react-router-dom';
-import { fetchFromBackend } from '../../../json';
+import { fetchFromBackend, fetchFromBackendWithoutRedirect } from '../../../json';
 
 const Login = () => {
   const context = useContext(APIContext);
@@ -14,7 +14,7 @@ const Login = () => {
 
     const formData = new FormData(e.target);
 
-    fetchFromBackend('/accounts/login/', {
+    fetchFromBackendWithoutRedirect('/accounts/login/', {
       method: "POST",
       body: formData
     }, navigate)
@@ -62,7 +62,7 @@ const Login = () => {
 
   return <div className="container">
     <div className="row">
-      <h1 className="display-3 mb-5 text-center">Log In</h1>
+      <h1 className="display-3 mb-5 text-center">Login</h1>
       {showSuccess
         ? <div className="alert alert-success" role="alert">
           <p className="m-0">Success! You will be redirected in one second.</p>
@@ -87,7 +87,7 @@ const Login = () => {
           </div>
         </div>
         <div className="form-group text-center my-2">
-          <button type="submit" className="btn btn-primary">Log In</button>
+          <button type="submit" className="btn btn-primary">Login</button>
         </div>
       </form>
     </div>
