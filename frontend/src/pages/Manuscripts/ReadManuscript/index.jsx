@@ -3,6 +3,7 @@ import { APIContext } from "../../../contexts/APIContext";
 import { useNavigate, useSearchParams, Link, useParams } from 'react-router-dom';
 import { fetchFromBackend } from '../../../json';
 import DeleteManuscriptButton from '../../../components/Manuscripts/DeleteManuscriptButton';
+import './style.css';
 
 const ReadManuscript = () => {
   const context = useContext(APIContext);
@@ -74,10 +75,10 @@ const ReadManuscript = () => {
                   <p className="m-0">{ page.number }</p>
                 </div>
                 <div className="col-sm p-2">
-                  <p>{ page.text1 }</p>
+                  <p className='manuscript-page'>{ page.text1 }</p>
                 </div>
                 <div className="col-sm p-2">
-                  <p>{ page.text2 }</p>
+                  <p className='manuscript-page'>{ page.text2 }</p>
                 </div>
                 <div className="col-sm p-2">
                   {!!page.image
