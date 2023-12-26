@@ -40,7 +40,7 @@ const EditManuscript = () => {
   }, [context, id, navigate]);
 
   useEffect(() => {
-    fetchFromBackend(`/manuscripts/${id}/pages/?page=${query.page}`, {
+    fetchFromBackend(`/manuscripts/${id}/pages/?limit=10&offset=${(query.page - 1) * 10}`, {
       headers: {
         Authorization: 'Bearer ' + context.token
       }

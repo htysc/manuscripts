@@ -17,7 +17,7 @@ const ViewManuscripts = () => {
   }), [searchParams]);
 
   useEffect(() => {
-    fetchFromBackend(`/manuscripts/?page=${query.page}`, {
+    fetchFromBackend(`/manuscripts/?limit=10&offset=${(query.page - 1) * 10}`, {
       headers: {
         Authorization: 'Bearer ' + context.token
       }

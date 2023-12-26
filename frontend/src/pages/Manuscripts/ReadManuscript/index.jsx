@@ -37,7 +37,7 @@ const ReadManuscript = () => {
   }, [context, id, navigate]);
 
   useEffect(() => {
-    fetchFromBackend(`/manuscripts/${id}/pages/?page=${query.page}`, {
+    fetchFromBackend(`/manuscripts/${id}/pages/?limit=10&offset=${(query.page - 1) * 10}`, {
       headers: {
         Authorization: 'Bearer ' + context.token
       }
@@ -62,23 +62,44 @@ const ReadManuscript = () => {
     }
   }, [totalPages, pages, query, setSearchParams]);
 
-  return <div className="container">
+  window.addEventListener('beforeprint', async () => {
+    const response = await fetchFromBackend(`/manuscripts/${id}/pages/`, {
+      headers: {
+        Authorization: 'Bearer ' + context.token
+      }
+    }, navigate);
+
+    let json;
+    if (response.ok) {
+      json = await response.json();
+    } else {
+      json = {results: [], count: 1};
+    }
+    setPages(json);
+    setTotalPages(1);
+  });
+
+  window.addEventListener('afterprint', () => {
+    navigate(0);
+  });
+
+  return <div className="main-container container">
     <div className="row text-center">
-      <h1 className="display-3 mb-4">{manuscript.title}</h1>
+      <h1 className="display-3 mb-4"><span>{manuscript.title}</span></h1>
       {pages.length > 0
         ? <>
           <p className="m-0"><Link className="btn btn-primary" to={`/manuscripts/${id}/edit?page=${query.page}`}>Edit this manuscript</Link></p>
-          <div className="container p-4">
+          <div className="page-container container p-4">
             {pages.map((page, idx) => {
-              return <div key={idx} className="row p-3 m-2 border border-dark rounded">
+              return <div key={idx} className="manuscript-page row p-3 m-2 border border-dark rounded">
                 <div className="col-sm-12 p-2">
                   <p className="m-0">{ page.number }</p>
                 </div>
                 <div className="col-sm p-2">
-                  <p className='manuscript-page'>{ page.text1 }</p>
+                  <p className='manuscript-text'>{ page.text1 }</p>
                 </div>
                 <div className="col-sm p-2">
-                  <p className='manuscript-page'>{ page.text2 }</p>
+                  <p className='manuscript-text'>{ page.text2 }</p>
                 </div>
                 <div className="col-sm p-2">
                   {!!page.image
@@ -87,7 +108,7 @@ const ReadManuscript = () => {
                 </div>
               </div>;
             })}
-            <div className="d-sm-flex justify-content-between">
+            <div className="pagination-indicator d-sm-flex justify-content-between">
               {query.page > 1 
                 ? <button className='btn btn-secondary mt-3' onClick={() => setSearchParams({...query, page: query.page - 1})}>Previous</button>
                 : <button className="invisible" /> }
@@ -95,7 +116,7 @@ const ReadManuscript = () => {
                 ? <button className='btn btn-secondary mt-3' onClick={() => setSearchParams({...query, page: query.page + 1})}>Next</button>
                 : <button className="invisible" /> }
             </div>
-            <p className='mt-2 text-center'>Page {query.page} out of {totalPages || 1}</p>
+            <p className='pagination-indicator mt-2 text-center'>Page {query.page} out of {totalPages || 1}</p>
           </div>
         </>
         : ''}

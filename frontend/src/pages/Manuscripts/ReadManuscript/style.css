@@ -1,3 +1,42 @@
-.manuscript-page {
+.manuscript-text {
   white-space: pre-wrap;
+}
+
+@media only print {
+  .btn, header, footer, .pagination-indicator {
+    display: none;
+  }
+
+  main, .page-container {
+    padding: 0 !important;
+  }
+
+  .main-container {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  h1 {
+    height: 90vh;
+    position: relative;
+    margin: 0 !important;
+  }
+
+  h1 > span {
+    position: absolute;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  .manuscript-page {
+    break-inside: avoid;
+    break-before: always;
+    margin: 0 !important;
+    border: 0 !important;
+    padding: 0.5cm !important;
+  }
+
+  @page {
+    size: landscape;
+  }
 }
