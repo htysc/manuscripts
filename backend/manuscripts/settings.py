@@ -29,6 +29,7 @@ DEBUG = True  # TODO
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    '34.238.247.132',
 ]
 
 CORS_ALLOWED_ORIGINS = [
